@@ -1,0 +1,23 @@
+# Template file for 'git-identity'
+pkgname=git-identity
+version=1
+revision=1
+hostmakedepends="git"
+makedepends=""
+depends=""
+short_desc="Manage your identity in Git"
+maintainer="xaltsc <xaltsc@protonmail.ch>"
+license="WTFPL"
+homepage="https://github.com/madx/git-identity"
+
+do_fetch() {
+	git clone "${homepage}.git" "${wrksrc}"
+}
+
+do_install() {
+        vbin ${wrksrc}/git-identity
+        vinstall ${wrksrc}/git-identity.bash-completion 644 usr/share/bash-completion/completions git-identity
+        vinstall ${wrksrc}/git-identity.zsh-completion 644 usr/share/zsh/site-functions _git-identity
+}
+
+checksum=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadb
