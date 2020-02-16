@@ -1,0 +1,20 @@
+# Template file for 'libsynctex'
+pkgname=libsynctex
+version=2019.51075
+revision=6
+build_style=fetch
+short_desc="Library for synchronisation between TeX files and the resulting file"
+maintainer="xaltsc <xaltsc@protonmail.ch>"
+license="GPL-2.0-or-later"
+hostmakedepends="zstd tar tree"
+homepage="https://tug.org/texlive"
+distfiles="http://archlinux.thaller.ws/extra/os/x86_64/libsynctex-${version}-${revision}-x86_64.pkg.tar.zst"
+checksum=65952ba1b596de8f864e9028241c41ee71de0fbd724cf37446c47bbb14129882
+
+do_extract() {
+  tar -I zstd -xvf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/libsynctex-${version}-${revision}-x86_64.pkg.tar.zst
+}
+
+do_install() {
+  vcopy usr usr
+}
