@@ -1,0 +1,17 @@
+# Template file for 'parinfer-rust'
+pkgname=parinfer-rust
+version=0.4.3
+revision=1
+build_style="cargo"
+makedepends="clang"
+short_desc="Infer parentheses for Clojure, Lisp and Scheme"
+maintainer="xaltsc <hej+dev@xaltsc.dev>"
+license="ISC"
+homepage="https://github.com/eraserhd/parinfer-rust"
+distfiles="https://github.com/eraserhd/parinfer-rust/archive/v${version}.tar.gz"
+checksum=752fd8eaa8c0c314c69b6be3415fbc4103f5ef9d1ad01a8b792545bfaff2d201
+
+post_install() {
+	vlicense LICENSE.md
+	vinstall "${wrksrc}/target/x86_64-unknown-linux-gnu/release/libparinfer_rust.so" 755 usr/lib
+}
