@@ -1,7 +1,7 @@
 # Template file for 'emacs'
 pkgname=emacs
-version=28.1
-revision=3
+version=29.0
+revision=1
 build_style=gnu-configure
 configure_args="--with-file-notification=inotify --with-modules
  $(vopt_with jpeg) $(vopt_with tiff) $(vopt_with gif) $(vopt_with png)
@@ -9,7 +9,7 @@ configure_args="--with-file-notification=inotify --with-modules
  $(vopt_with xml xml2) $(vopt_with gnutls) $(vopt_with sound) $(vopt_with m17n m17n-flt)
  $(vopt_with json) $(vopt_with harfbuzz) $(vopt_with cairo) $(vopt_with gmp libgmp)
  $(vopt_with nativecomp native-compilation)"
-hostmakedepends="pkg-config tar"
+hostmakedepends="pkg-config tar git autoconf texinfo"
 makedepends="ncurses-devel libXaw-devel gtk+3-devel webkit2gtk-devel
  dbus-devel acl-devel
  $(vopt_if jpeg libjpeg-turbo-devel) $(vopt_if tiff tiff-devel)
@@ -25,8 +25,9 @@ short_desc="GNU Emacs editor"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-3.0-or-later"
 homepage="http://www.gnu.org/software/emacs/"
-distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.xz"
-checksum=28b1b3d099037a088f0a4ca251d7e7262eab5ea1677aabffa6c4426961ad75e1
+#distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.xz"
+#checksum=28b1b3d099037a088f0a4ca251d7e7262eab5ea1677aabffa6c4426961ad75e1
+_commit="4ac18cc34a7b1e28f2c3e60acc542830c9bc0090"
 nocross=yes
 nopie=yes
 
@@ -54,27 +55,41 @@ pre_configure() {
 	mkdir -p nox
 	mv * nox || true
 	cp -a nox x11
-	cp -a nox gtk3
+#	cp -a nox gtk3
+#	cp -a nox pgtk
+}
+do_fetch() {
+	git clone git://git.sv.gnu.org/emacs.git ${wrksrc}
+	cd ${wrksrc}
+	git checkout ${_commit}
 }
 
 do_configure() {
 	cd $wrksrc/nox
+   [[-x configure]] || ./autogen.sh
 	./configure --without-x $(vopt_with dbus) ${configure_args} \
 		--without-native-compilation
 
-	cd $wrksrc/x11
-	./configure --with-x-toolkit=athena --without-toolkit-scroll-bars \
-		$(vopt_with dbus) --without-gconf --without-gsettings \
-		${configure_args}
+#	cd $wrksrc/x11
+#   [[-x configure]] || ./autogen.sh
+#	./configure --with-x-toolkit=athena --without-toolkit-scroll-bars \
+#		$(vopt_with dbus) --without-gconf --without-gsettings \
+#		${configure_args}
 
-	cd $wrksrc/gtk3
-	./configure --with-x-toolkit=gtk3 --with-xwidgets ${configure_args}
+#	cd $wrksrc/gtk3
+#  [[-x configure]] || ./autogen.sh
+#	./configure --with-x-toolkit=gtk3 ${configure_args}
+
+	cd $wrksrc/pgtk
+  [[-x configure]] || ./autogen.sh
+	./configure --with-pgtk ${configure_args}
 }
 
 do_build() {
 	make ${makejobs} -C nox
-	make ${makejobs} -C x11 $(vopt_if nativecomp NATIVE_FULL_AOT=1)
-	make ${makejobs} -C gtk3 $(vopt_if nativecomp NATIVE_FULL_AOT=1)
+#	make ${makejobs} -C x11 $(vopt_if nativecomp NATIVE_FULL_AOT=1)
+#	make ${makejobs} -C gtk3 $(vopt_if nativecomp NATIVE_FULL_AOT=1)
+	make ${makejobs} -C pgtk $(vopt_if nativecomp NATIVE_FULL_AOT=1)
 }
 
 do_install() {
@@ -98,26 +113,39 @@ emacs-common_package() {
 	}
 }
 
-emacs-x11_package() {
-	depends="emacs-common-${version}_${revision}"
-	provides="emacs-${version}_${revision}"
-	replaces="emacs>=0"
-	short_desc+=" - X11 version"
-	pkg_install() {
-		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/x11 install
-		rm -f ${PKGDESTDIR}/usr/bin/ctags
-		rm -rf ${PKGDESTDIR}/usr/share
-		rm -rf ${PKGDESTDIR}/usr/lib/systemd
-	}
-}
+#emacs-x11_package() {
+#	depends="emacs-common-${version}_${revision}"
+#	provides="emacs-${version}_${revision}"
+#	replaces="emacs>=0"
+#	short_desc+=" - X11 version"
+#	pkg_install() {
+#		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/x11 install
+#		rm -f ${PKGDESTDIR}/usr/bin/ctags
+#		rm -rf ${PKGDESTDIR}/usr/share
+#		rm -rf ${PKGDESTDIR}/usr/lib/systemd
+#	}
+#}
 
-emacs-gtk3_package() {
+#emacs-gtk3_package() {
+#	depends="emacs-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
+#	provides="emacs-${version}_${revision}"
+#	replaces="emacs>=0"
+#	short_desc+=" - GTK+3 version"
+#	pkg_install() {
+#		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/gtk3 install
+#		rm -f ${PKGDESTDIR}/usr/bin/ctags
+#		rm -rf ${PKGDESTDIR}/usr/share/{emacs,man,info}
+#		rm -rf ${PKGDESTDIR}/usr/lib/systemd
+#	}
+#}
+
+emacs-pgtk_package() {
 	depends="emacs-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
 	provides="emacs-${version}_${revision}"
 	replaces="emacs>=0"
 	short_desc+=" - GTK+3 version"
 	pkg_install() {
-		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/gtk3 install
+		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/pgtk install
 		rm -f ${PKGDESTDIR}/usr/bin/ctags
 		rm -rf ${PKGDESTDIR}/usr/share/{emacs,man,info}
 		rm -rf ${PKGDESTDIR}/usr/lib/systemd
