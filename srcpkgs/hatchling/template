@@ -1,0 +1,19 @@
+# Template file for 'hatchling'
+pkgname=hatchling
+version=1.9.0
+revision=1
+build_style=python3-pep517
+_deps="python3-pathspec python3-tomli python3-pluggy python3-packaging python3-editables"
+hostmakedepends="python3-setuptools ${_deps}"
+depends="${_deps}"
+short_desc="Extensible, standards compliant build backend used by Hatch"
+maintainer="Jan Christian Grünhage <jan.christian@gruenhage.xyz>"
+license="MIT"
+homepage="https://hatch.pypa.io/latest/"
+changelog="https://raw.githubusercontent.com/pypa/hatch/master/docs/history.md"
+distfiles="${PYPI_SITE}/h/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=b57c7362f437b9426e4b94228a21d2ac5804fbb2abcb01adde2544a35bb303cd
+
+post_install() {
+	vlicense LICENSE.txt
+}

@@ -1,6 +1,6 @@
 # Template file for 'legendary'
 pkgname=legendary
-version=0.20.25
+version=0.20.29
 revision=1
 build_style=python3-module
 hostmakedepends="python3-setuptools"
@@ -10,5 +10,5 @@ maintainer="Lorem <notloremipsum@protonmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/derrod/legendary"
 distfiles="https://github.com/derrod/legendary/archive/${version}.tar.gz"
-checksum=4ad0a56a73298b5686ebfbc22ce476619db1af4b40ce288ff64fa985ee975262
+checksum=f1422fd33ba6c7d06ac162b6dcd6447b2e3f85b69c9d3ecc224896bfedc85368
 make_check=no # doesn't contain any tests

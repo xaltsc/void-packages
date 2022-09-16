@@ -1,19 +1,20 @@
 # Template file for 'PolyMC'
 pkgname=PolyMC
-version=1.3.1
+version=1.4.2
 revision=1
 build_style=cmake
 configure_args="-DLauncher_BUILD_PLATFORM=Void
  -DLauncher_VERSION_BUILD=${revision}"
-hostmakedepends="openjdk8 qt5-host-tools qt5-qmake"
+hostmakedepends="extra-cmake-modules openjdk8 pkg-config qt5-host-tools
+ qt5-qmake scdoc"
 makedepends="qt5-devel"
-depends="virtual?java-runtime qt5-imageformats xrandr"
+depends="virtual?java-runtime qt5-svg qt5-imageformats xrandr"
 short_desc="Custom launcher for Minecraft"
 maintainer="Philipp David <pd@3b.pm>"
 license="GPL-3.0-only"
 homepage="https://polymc.org/"
 distfiles="https://github.com/PolyMC/PolyMC/releases/download/${version}/PolyMC-${version}.tar.gz"
-checksum=bb39bd8def07eedbfe5ff40c0860de0b79ac2755b7ba42fa61be35830a94f59a
+checksum=a66f25e0389815d2419a5b3aa1b85a390f14bbf3997c55c7da1ce4507b5aa511
 
 if [ -z "$XBPS_CHECK_PKGS" ]; then
 	configure_args+=" -DBUILD_TESTING=0"
@@ -25,7 +26,7 @@ esac
 
 post_patch() {
 	vsed -i buildconfig/BuildConfig.cpp.in \
-		-e 's/"-" + QString/"_" + QString/'
+		-e 's/+build\./_/'
 	rm -rf .git
 }
 

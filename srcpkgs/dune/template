@@ -1,6 +1,6 @@
 # Template file for 'dune'
 pkgname=dune
-version=3.2.0
+version=3.4.1
 revision=1
 makedepends="ocaml"
 depends="ocaml"
@@ -9,7 +9,7 @@ maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="MIT"
 homepage="https://dune.build/"
 distfiles="https://github.com/ocaml/dune/archive/refs/tags/${version}.tar.gz"
-checksum=34740f5ecbce83a17c0b0bae1a93b66184064aa27c08c4020163e567dc6de2d7
+checksum=dc260f7f723b17cec104d394d904b402a0b0108d2d3241fe7596e6d473502cef
 nocross="ocaml"
 
 _dune_release_pkgs="dune dune-action-plugin dune-build-info dune-configurator
