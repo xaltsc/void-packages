@@ -1,0 +1,17 @@
+# Template file for 'xapian-glib'
+pkgname=xapian-glib
+version=3.3.20
+revision=1
+build_style=gnu-configure
+hostmakedepends="pkg-config which autoconf automake libtool gobject-introspection"
+makedepends="libglib-devel gtk-doc xapian-core-devel"
+short_desc="GLib bindings for Xapian"
+maintainer="xaltsc <hey+dev@xaltsc.dev>"
+license="GPL-2.0"
+homepage="https://github.com/endlessm/xapian-glib"
+distfiles="https://github.com/endlessm/${pkgname}/archive/Release_${version}.tar.gz"
+checksum=290dd42f86e3d0e3fda398ef3dbb60c56098ef1209b7a585a9e0906f1b2e65b0
+
+do_configure () {
+  ./autogen.sh --prefix "/usr"
+}
