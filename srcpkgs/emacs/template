@@ -1,7 +1,7 @@
 # Template file for 'emacs'
 pkgname=emacs
 version=29.0
-revision=1
+revision=2
 build_style=gnu-configure
 configure_args="--with-file-notification=inotify --with-modules
  $(vopt_with jpeg) $(vopt_with tiff) $(vopt_with gif) $(vopt_with png)
@@ -27,7 +27,7 @@ license="GPL-3.0-or-later"
 homepage="http://www.gnu.org/software/emacs/"
 #distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.xz"
 #checksum=28b1b3d099037a088f0a4ca251d7e7262eab5ea1677aabffa6c4426961ad75e1
-_commit="4ac18cc34a7b1e28f2c3e60acc542830c9bc0090"
+_commit="fe7c015b20b5bca07aa178d28b9fd5cc66ad16f9"
 nocross=yes
 nopie=yes
 
@@ -56,7 +56,7 @@ pre_configure() {
 	mv * nox || true
 	cp -a nox x11
 #	cp -a nox gtk3
-#	cp -a nox pgtk
+	cp -a nox pgtk
 }
 do_fetch() {
 	git clone git://git.sv.gnu.org/emacs.git ${wrksrc}
